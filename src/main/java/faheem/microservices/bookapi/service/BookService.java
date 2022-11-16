@@ -46,4 +46,9 @@ public class BookService {
             throw new NoSuchElementException("book with this book name not found!");
         }
     }
+
+    public void deleteBook(Integer bookId) {
+        log.info("deleteBook() method in service called...");
+        bookRepository.deleteById(bookId);
+    }
 }

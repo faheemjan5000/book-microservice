@@ -51,6 +51,12 @@ public class BookController {
         return bookService.getBookByName(name);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public void deleteBook(@PathVariable Integer id){
+        log.info("deleteBook() in controller is called...");
+         bookService.deleteBook(id);
+         log.info("deleted book with id succesfully {}",id);
+    }
     @GetMapping("/data")
     public String getBookData(){
         return "data of BOOK-SERVICE running on port :"
