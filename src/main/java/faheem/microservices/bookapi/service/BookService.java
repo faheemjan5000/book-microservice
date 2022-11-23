@@ -1,6 +1,8 @@
 package faheem.microservices.bookapi.service;
 
+import faheem.microservices.bookapi.jdbcRepository.BookJdbcRepository;
 import faheem.microservices.bookapi.model.Book;
+import faheem.microservices.bookapi.model.BookJDBC;
 import faheem.microservices.bookapi.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,9 @@ public class BookService {
 
     @Autowired
     BookRepository bookRepository;
+
+    @Autowired
+    BookJdbcRepository bookJdbcRepository;
 
     public List<Book> getAllBooks(){
         return bookRepository.findAll();
@@ -50,5 +55,19 @@ public class BookService {
     public void deleteBook(Integer bookId) {
         log.info("deleteBook() method in service called...");
         bookRepository.deleteById(bookId);
+    }
+  // ******************************* JDBC ********************************************
+
+    public List<String> getAllBooksNamesJDBC(){
+       return bookJdbcRepository.getAllBookNamesJDBC();
+    }
+
+    public List<BookJDBC> getAllBooksJDBC(){
+        return bookJdbcRepository.getAllBooksJDBC();
+    }
+
+    public BookJDBC insertBook(BookJDBC book){
+        log.info("BookService.insertBook() method is called...");
+        return bookJdbcRepository.insertBookJDBC(book);
     }
 }

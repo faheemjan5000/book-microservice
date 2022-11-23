@@ -1,5 +1,6 @@
 package faheem.microservices.bookapi;
 
+import faheem.microservices.bookapi.jdbcRepository.BookJdbcRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,11 @@ public class BookApiApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BookApiApplication.class, args);
+    }
+
+    @Bean
+    public BookJdbcRepository getBookJdbcRepositoryBean(){
+        return new BookJdbcRepository();
     }
 
 }

@@ -1,6 +1,7 @@
 package faheem.microservices.bookapi.controller;
 
 import faheem.microservices.bookapi.model.Book;
+import faheem.microservices.bookapi.model.BookJDBC;
 import faheem.microservices.bookapi.service.BookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +69,25 @@ public class BookController {
                 "hello from bookRestController",
                 HttpStatus.OK
         );
+    }
+
+
+    // ************************ in the following endpoints JDBC template is called ******************************
+
+    @GetMapping("/bookNamesJDBC")
+    public List<String> getAllBookNamesJDBC(){
+        return bookService.getAllBooksNamesJDBC();
+    }
+
+    @GetMapping("/booksJDBC")
+    public List<BookJDBC> getAllBooksJDBC(){
+        return bookService.getAllBooksJDBC();
+    }
+
+    @PostMapping("/insertBookJDBC")
+    public BookJDBC insertBook(@RequestBody BookJDBC book){
+        log.info("BookController.insertBook() method is called...");
+        log.info("book to be inserted is : {}",book);
+        return bookService.insertBook(book);
     }
 }
