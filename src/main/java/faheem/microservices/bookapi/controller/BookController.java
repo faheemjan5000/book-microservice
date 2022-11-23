@@ -90,4 +90,16 @@ public class BookController {
         log.info("book to be inserted is : {}",book);
         return bookService.insertBook(book);
     }
+
+    @DeleteMapping("/removeBookJDBC/{id}")
+    public void removeBookJDBC(@PathVariable Integer id){
+        log.info("BookController.removeBookJDBC() method is called...");
+        bookService.removeBookJDBC(id);
+    }
+
+    @PutMapping("/updateBookJdbc")
+    public void updatedBook(@RequestBody BookJDBC book){
+        log.info("BookController.updatedBook() method is called...");
+        bookService.updatedBook(book);
+    }
 }

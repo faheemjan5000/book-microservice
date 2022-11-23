@@ -56,4 +56,25 @@ public class BookJdbcRepository {
         log.info("book inserted successfully. {}" ,book);
         return book;
     }
+
+    public void removeBookJDBC(int bookId){
+        log.info("BookJdbcRepository.removeBookJDBC() method is  called...");
+        log.info("deleting book with id : {}",bookId);
+        String deleteSql = "DELETE FROM book WHERE book_id=" +bookId;
+        log.info("the query is : {}",deleteSql);
+        jdbcTemplate.update(deleteSql);
+
+        log.info("book deleted successfully. {}" ,bookId);
+
+    }
+
+    public void updateBook(BookJDBC book){
+        log.info("BookJdbcRepository.updateBook() method is called... {}",book);
+        String updateSql = "UPDATE book SET book_name = ? where book_id = ?";
+        jdbcTemplate.update(updateSql,book.getBookName(),book.getBookId());
+        log.info("update query is : {}",updateSql);
+        log.info("updated book successfully!");
+    }
+
+
 }

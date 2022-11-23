@@ -70,4 +70,14 @@ public class BookService {
         log.info("BookService.insertBook() method is called...");
         return bookJdbcRepository.insertBookJDBC(book);
     }
+
+    public void removeBookJDBC(int bookId){
+        log.info("BookService.removeBookJDBC() method is called...");
+       bookJdbcRepository.removeBookJDBC(bookId);
+    }
+
+    public void updatedBook(BookJDBC book){
+        log.info("BookService.updatedBook() method is called...");
+        bookJdbcRepository.updateBook(book);
+    }
 }
