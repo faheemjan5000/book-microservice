@@ -3,9 +3,12 @@ package faheem.microservices.bookapi.service;
 import faheem.microservices.bookapi.jdbcRepository.BookJdbcRepository;
 import faheem.microservices.bookapi.model.Book;
 import faheem.microservices.bookapi.model.BookJDBC;
+import faheem.microservices.bookapi.model.PageInfo;
 import faheem.microservices.bookapi.repository.BookRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -79,5 +82,15 @@ public class BookService {
     public void updatedBook(BookJDBC book){
         log.info("BookService.updatedBook() method is called...");
         bookJdbcRepository.updateBook(book);
+    }
+
+    public BookJDBC getBookByIdJDBC(Integer bookId){
+        log.info("BookService.getBookByIdJDBC() method is called...");
+        return bookJdbcRepository.getBookByIdJDBC(bookId);
+    }
+
+    //pagination
+    public PageInfo getAllBooksJDBCPageable(Pageable pageable) {
+        return  bookJdbcRepository.getAllBooksJDBCPageable(pageable);
     }
 }

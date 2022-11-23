@@ -2,16 +2,18 @@ package faheem.microservices.bookapi.controller;
 
 import faheem.microservices.bookapi.model.Book;
 import faheem.microservices.bookapi.model.BookJDBC;
+import faheem.microservices.bookapi.model.PageInfo;
 import faheem.microservices.bookapi.service.BookService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
-import java.util.ArrayList;
+
 import java.util.List;
 
 @Slf4j
@@ -101,5 +103,16 @@ public class BookController {
     public void updatedBook(@RequestBody BookJDBC book){
         log.info("BookController.updatedBook() method is called...");
         bookService.updatedBook(book);
+    }
+
+    @GetMapping("/bookJdbc/{id}")
+    public BookJDBC getBookByIdJDBC(@PathVariable Integer id){
+        return bookService.getBookByIdJDBC(id);
+    }
+
+    @GetMapping(value ="/pageable")
+    public PageInfo pageableExample(Pageable pageable){
+         log.info("pageable :",pageable);
+        return  bookService.getAllBooksJDBCPageable(pageable);
     }
 }

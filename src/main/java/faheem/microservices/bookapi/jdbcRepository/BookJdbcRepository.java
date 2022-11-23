@@ -2,8 +2,12 @@ package faheem.microservices.bookapi.jdbcRepository;
 
 import faheem.microservices.bookapi.model.BookJDBC;
 import faheem.microservices.bookapi.model.BookJDBCrowMapper;
+import faheem.microservices.bookapi.model.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -22,24 +26,37 @@ public class BookJdbcRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+
+    public BookJDBC getBookByIdJDBC(Integer bookId){
+        log.info("getAllBookNamesJDBC.getBookByIdJDBC() method is called. book is passed is : {}",bookId);
+        String selectSql = "select * from book where book_id = ?";
+        try {
+            return jdbcTemplate.queryForObject(selectSql, new Object[]{bookId}, new BookJDBCrowMapper());
+        }
+        catch (EmptyResultDataAccessException e){
+            log.error("book is not present with this id : {}",bookId);
+            log.error("Exception Message : {}",e.getMessage());
+        }
+        return null;
+    }
     public List<String> getAllBookNamesJDBC(){
         log.info("getAllBookNamesJDBC() method is called...");
         List<String> allBookNames = new ArrayList<>();
         String query = "select book_name from book ";
-        allBookNames.addAll(jdbcTemplate.queryForList(query,String.class));
-        log.info("all books names are : {} ",allBookNames);
+            allBookNames.addAll(jdbcTemplate.queryForList(query, String.class));
+            log.info("all books names are : {} ", allBookNames);
         return allBookNames;
     }
 
     @Transactional()
         public List<BookJDBC> getAllBooksJDBC(){
         log.info("getAllBooksJDBC() method is called...");
-        List<BookJDBC> books = new ArrayList<>();
         String query = "select * from book ";
-
       return jdbcTemplate.query(query,new BookJDBCrowMapper());
 
     }
+
+
 
      //update method is used to insert a record in database.
     public BookJDBC insertBookJDBC(BookJDBC book){
@@ -76,5 +93,24 @@ public class BookJdbcRepository {
         log.info("updated book successfully!");
     }
 
+    @Transactional()
+    public PageInfo getAllBooksJDBCPageable(Pageable pageable) {
+        log.info("getAllBooksJDBC() method is called...");
+        PageInfo pageInfo = new PageInfo();
+        List<BookJDBC> books = new ArrayList<>();
+        //String query = "select * from book ";
+        String query = "select * from book LIMIT "+pageable.getPageNumber()+","+pageable.getPageSize();
+
+         pageInfo.setBookList(jdbcTemplate.query(query,new BookJDBCrowMapper()));
+         pageInfo.setPageNumber(pageable.getPageNumber()); //starting element
+         pageInfo.setPageSize(pageable.getPageSize());
+         String totalItemsSql = "select * from book";
+         int totallNumberElements = jdbcTemplate.query(totalItemsSql,new BookJDBCrowMapper()).size();
+        pageInfo.setTotaleElements(totallNumberElements);
+        int totalPages = totallNumberElements/ pageInfo.getPageSize();
+        pageInfo.setTotalPages(totalPages);
+
+     return pageInfo;
+    }
 
 }
