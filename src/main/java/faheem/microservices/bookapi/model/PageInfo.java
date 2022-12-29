@@ -14,7 +14,7 @@ public class PageInfo {
 
     private int pageSize;
     private int pageNumber;
-    private int totaleElements;
+    private int totalElements;
     private int totalPages;
     List<BookJDBC> bookList = new ArrayList<>();
 }

@@ -12,4 +12,5 @@ public class BookJDBC {
     private Integer bookId;
     private String bookName;
     private Double bookCost;
+
 }

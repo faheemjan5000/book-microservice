@@ -96,18 +96,22 @@ public class BookJdbcRepository {
     @Transactional()
     public PageInfo getAllBooksJDBCPageable(Pageable pageable) {
         log.info("getAllBooksJDBC() method is called...");
-        PageInfo pageInfo = new PageInfo();
+
         List<BookJDBC> books = new ArrayList<>();
         //String query = "select * from book ";
         String query = "select * from book LIMIT "+pageable.getPageNumber()+","+pageable.getPageSize();
+        String totalItemsSql = "select * from book";
+        int totallNumberElements = jdbcTemplate.query(totalItemsSql,new BookJDBCrowMapper()).size();
+        int totalPages = totallNumberElements/ pageable.getPageSize();
 
-         pageInfo.setBookList(jdbcTemplate.query(query,new BookJDBCrowMapper()));
+        PageInfo pageInfo = new PageInfo();
+
+        pageInfo.setBookList(jdbcTemplate.query(query,new BookJDBCrowMapper()));
          pageInfo.setPageNumber(pageable.getPageNumber()); //starting element
          pageInfo.setPageSize(pageable.getPageSize());
-         String totalItemsSql = "select * from book";
-         int totallNumberElements = jdbcTemplate.query(totalItemsSql,new BookJDBCrowMapper()).size();
-        pageInfo.setTotaleElements(totallNumberElements);
-        int totalPages = totallNumberElements/ pageInfo.getPageSize();
+
+        pageInfo.setTotalElements(totallNumberElements);
+
         pageInfo.setTotalPages(totalPages);
 
      return pageInfo;
